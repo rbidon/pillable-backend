@@ -12,7 +12,7 @@ DATABASE = SqliteDatabase('medication.sqlite')
 #  define my Medication Model uses class
 class Medication(Model):
     name = CharField()
-    quanity = CharField() #Or integerfield
+    quantity = CharField() #Or integerfield
     dosage_frequency = CharField()
     refill_date = DateField()
     refill_remaining = IntegerField()
