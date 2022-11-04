@@ -25,8 +25,8 @@ def medications_index():
         print(medications)
         return jsonify(data=medications, 
                        status={"code":200,
-                               "message":"Success"
-                               })
+                               "message":f"Success ,I found {len(medications)} medications"
+                               }), 200
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Error getting the resources"})
     
@@ -44,6 +44,49 @@ def create_medications():
     print(dir(medication))
     # Change the model to a dict
     medication__dict = model_to_dict(medication)
-    return jsonify(data=medication__dict, status={"code": 201, "message": "Success, new medication has been added successfully"})
-# UPDATE(PUT)
-# DESTORY(DELETE)
+    return jsonify(data=medication__dict, status={"code": 201, "message": "Success, new medication has been added successfully"}), 200
+# SHOW(GET) BY THE ID
+# api/v1/medications/<id>
+@medications.route('/<id>', methods=['GET'])
+def get_medications_by_id(id):
+    medication = models.Medication.get_by_id(id)
+    print(medication) #print to see the specific medication model by id
+    # if I get the correct medication return the message below
+    return jsonify(
+        # converting the datat into a dict to see
+        data= model_to_dict(medication),
+        status={
+            "code":200,
+            "message":f"Success, I grab the specific medication by the id"
+        }
+    ), 200
+# UPDATE(PUT) BY THE SPECIFIC ID
+# api/v1/medications/<id>
+@medications.route('/<id>', methods=['PUT'])
+def update_medications_by_id(id):
+    payload = request.get_json()
+    query = models.Medication.update(**payload).where(models.Medication.id == id)
+    # grab & commit the change by query.excute()
+    query.execute()
+    return jsonify(
+        # show the updated json data
+        data = model_to_dict(models.Medication.get_by_id(id)),
+        status={
+            "code":200,
+            "message":f"Success, I update the specific medication data by the id "
+        }
+    ),200
+
+# DESTORY(DELETE) BY THE SPECIFIC ID
+@medications.route('/<id>', methods=['DELETE'])
+def delete_medication_by_id(id):
+    query = models.Medication.delete().where(models.Medication.id == id)
+    # grab & commit the change by query.excute()
+    query.execute()
+    return jsonify(
+        data= model_to_dict(models.Medication.get_by_id(id)),
+        status={
+            "code":200,
+            "message":f'Successfully deleted medication by id'
+            }
+    ), 200
