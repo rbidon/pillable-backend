@@ -7,7 +7,14 @@ from flask_login import UserMixin
 # define the database uses SqliteDatabase
 DATABASE = SqliteDatabase('medication.sqlite')
 
-
+class User(UserMixin):
+    username =CharField(unique=True)
+    # no repeat email & username
+    email= CharField(unique =True)
+    password = CharField()
+    
+    class Meta:
+        database = CharField()
         
 #  define my Medication Model uses class
 class Medication(Model):
