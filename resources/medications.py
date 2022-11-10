@@ -36,7 +36,7 @@ def medications_index():
 def create_medications():
     # payload request which is the req.body of the create medications
     payload = request.get_json()
-    print(type(payload), 'payload')
+    print((payload), 'payload')
     medication =models.Medication.create(**payload)
     # medication object that will convert to model to an dict
     print(medication.__dict__)

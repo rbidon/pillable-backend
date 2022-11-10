@@ -1,5 +1,5 @@
 # imported flask package from Flask located in requirements.txt
-from flask import Flask, jsonify,g
+from flask import Flask, jsonify,after_this_request,g
 
 import os
 # import dotenv to use the enivorment
@@ -48,7 +48,7 @@ app.register_blueprint(medications, url_prefix='/api/v1/medications')
 app.register_blueprint(user, url_prefix='/users')
 
 
-@app.before_request
+#@app.before_request
 def before_request():
     """Connect to the database before each request."""
     g.db = models.DATABASE
@@ -61,6 +61,20 @@ def after_request(response):
     g.db.close()
     return response
 
+# @app.before_request # use this decorator to cause a function to run before reqs
+# def before_request():
+
+#     """Connect to the db before each request"""
+#     print("you should see this before each request") # optional -- to illustrate that this code runs before each request -- similar to custom middleware in express.  you could also set it up for specific blueprints only.
+#     models.DATABASE.connect()
+
+#     @after_this_request # use this decorator to Executes a function after this request
+#     def after_request(response):
+#         """Close the db connetion after each request"""
+#         print("you should see this after each request") # optional -- to illustrate that this code runs after each request
+#         models.DATABASE.close()
+#         return response # go ahead and send response back to client
+#                       # (in our case this will be some JSON)
 
 
 # default url 
@@ -69,7 +83,14 @@ def after_request(response):
 #     # return will display whatever is next to it 
 #     return 'testing routes'
 
-# will run the app 
+
+
+# run for deloyment
+if os.environ.get('FLASK_ENV') != 'development':
+  print('\non heroku!')
+  models.initialize()
+  
+  # will run the app for locally
 if __name__ == '__main__':
 # invoke the method
     models.initialize()
