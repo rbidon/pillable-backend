@@ -36,21 +36,24 @@ def medications_index():
 def create_medications():
     # payload request which is the req.body of the create medications
     payload = request.get_json()
-    print((payload), 'payload')
+    # print((payload), 'payload')
     medication =models.Medication.create(**payload)
     # medication object that will convert to model to an dict
-    print(medication.__dict__)
-    # see all the methods
-    print(dir(medication))
+    # print(medication.__dict__)
+    # # see all the methods
+    # print(dir(medication))
     # Change the model to a dict
-    medication__dict = model_to_dict(medication)
-    return jsonify(data=medication__dict, status={"code": 201, "message": "Success, new medication has been added successfully"}), 200
+    # medication_dict = model_to_dict(medication)
+    # print(medication_dict)
+    return jsonify(
+        data=model_to_dict(medication),
+        status={"code": 201, "message": "Success, new medication has been added successfully"}), 200
 # SHOW(GET) BY THE ID
 # api/v1/medications/<id>
 @medications.route('/<id>', methods=['GET'])
 def get_medications_by_id(id):
     medication = models.Medication.get_by_id(id)
-    print(medication) #print to see the specific medication model by id
+    # print(medication) #print to see the specific medication model by id
     # if I get the correct medication return the message below
     return jsonify(
         # converting the datat into a dict to see
