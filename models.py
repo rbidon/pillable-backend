@@ -28,10 +28,10 @@ class Medication(Model):
     name = CharField()
     quantity = CharField() #Or integerfield
     dosage_frequency = CharField()
-    refill_date = DateField(default=datetime.datetime.date)
+    refill_date = DateField()
     refill_remaining = IntegerField()
     notes = CharField()
-    created_at = DateTimeField(default=datetime.datetime.now)
+    created_at = DateTimeField(default=datetime.datetime.now(tz=None))
     # connect to a DATABASE & where to store its data
     class Meta:
         database = DATABASE
