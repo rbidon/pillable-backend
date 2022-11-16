@@ -39,7 +39,7 @@ def load_user(userid):
     except models.DoesNotExist:
         return None
 
-CORS(medications, origins=['http://localhost:3000'], supports_credentials=True) # so I can use it in the frontend
+CORS(medications, origins=[ 'http://localhost:3000',os.environ.get('FLASK_APP_FRONTEND_URL')], supports_credentials=True) # so I can use it in the frontend
 CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
 
 app.register_blueprint(medications, url_prefix='/api/v1/medications')
